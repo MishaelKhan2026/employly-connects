@@ -5,7 +5,7 @@ export const SKILLS = [
   "Knitting",
   "Sewing",
   "Teaching",
-  "Baking",
+  "Knitting",
   "Painting",
   "Drawing",
   "Social media",
@@ -136,11 +136,11 @@ export const SEED: Profile[] = [
   {
     id: "h4",
     role: "hiring",
-    name: "Greenyard Fireworks\u00a0",
+    name: "Greenyard Fireworks ",
     location: "Rose Garden Ave.",
     skills: ["Photography", "Social media", "Gardening"],
     about: "Someone to skillfully trim and shape our gardens and make weekly flyers and keep our page alive.",
-    lookingFor: "Someone to make weekly flyers and keep our page alive.",
+    lookingFor: "Someone to skillfully trim and shape our gardens and make weekly flyers and keep our page alive.",
     salary: "$250 / month",
   },
   {
