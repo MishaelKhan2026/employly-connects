@@ -3,6 +3,7 @@ import {
   defaultStore,
   loadStore,
   saveStore,
+  type InboxStatus,
   type Profile,
   type Role,
   type Store,
