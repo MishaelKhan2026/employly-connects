@@ -20,13 +20,22 @@ export function AppShell({
           <Link to="/" className="font-display text-2xl font-semibold tracking-tight">
             Employly
           </Link>
-          <Link
-            to="/profile"
-            className="rounded-full border border-primary-foreground/40 px-3 py-1.5 text-sm font-medium"
-            activeProps={{ className: "bg-primary-foreground/15" }}
-          >
-            My profile
-          </Link>
+          <nav className="flex items-center gap-2">
+            <Link
+              to="/inbox"
+              className="rounded-full border border-primary-foreground/40 px-3 py-1.5 text-sm font-medium"
+              activeProps={{ className: "bg-primary-foreground/15" }}
+            >
+              Inbox
+            </Link>
+            <Link
+              to="/profile"
+              className="rounded-full border border-primary-foreground/40 px-3 py-1.5 text-sm font-medium"
+              activeProps={{ className: "bg-primary-foreground/15" }}
+            >
+              My profile
+            </Link>
+          </nav>
         </div>
         <div className="mx-auto max-w-2xl px-4 pb-3">
           <RoleSwitch role={role} onChange={onRoleChange} />
