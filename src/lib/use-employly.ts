@@ -51,5 +51,16 @@ export function useEmployly() {
     [update],
   );
 
-  return { store, hydrated, setRole, setProfile, toggleRequest };
+  const setInboxStatus = useCallback(
+    (id: string, status: InboxStatus | null) =>
+      update((s) => {
+        const inbox = { ...(s.inbox ?? {}) };
+        if (status === null) delete inbox[id];
+        else inbox[id] = status;
+        return { ...s, inbox };
+      }),
+    [update],
+  );
+
+  return { store, hydrated, setRole, setProfile, toggleRequest, setInboxStatus };
 }
