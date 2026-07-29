@@ -154,6 +154,55 @@ export const SEED: Profile[] = [
   },
 ];
 
+/** Requests other people/businesses have sent to the current user, per role. */
+export type IncomingRequest = {
+  /** id of the sender in SEED */
+  fromId: string;
+  message: string;
+  sentAt: string;
+};
+
+export const INCOMING: Record<Role, IncomingRequest[]> = {
+  // If I'm hiring, job seekers request to join my business.
+  hiring: [
+    {
+      fromId: "s2",
+      message: "I bake every morning from 4am. I'd love to help in your kitchen.",
+      sentAt: "Today",
+    },
+    {
+      fromId: "s1",
+      message: "I can finish detailed crochet orders quickly and I live nearby.",
+      sentAt: "Yesterday",
+    },
+    {
+      fromId: "s5",
+      message: "Happy to shoot your products this weekend, I bring my own camera.",
+      sentAt: "3 days ago",
+    },
+  ],
+  // If I'm seeking, businesses invite me to work with them.
+  seeking: [
+    {
+      fromId: "h2",
+      message: "We saw your maker profile — can you start on 5 pieces a week?",
+      sentAt: "Today",
+    },
+    {
+      fromId: "h4",
+      message: "We need weekly flyers and someone to keep our page alive.",
+      sentAt: "2 days ago",
+    },
+    {
+      fromId: "h1",
+      message: "Morning shifts are open at the bakery if you're still looking.",
+      sentAt: "Last week",
+    },
+  ],
+};
+
+export type InboxStatus = "accepted" | "declined";
+
 const KEY = "employly:v1";
 
 type Store = {
@@ -161,12 +210,15 @@ type Store = {
   profiles: Record<Role, Profile>;
   /** ids the current user has sent a request to */
   requests: string[];
+  /** decision on incoming requests, keyed by sender id */
+  inbox: Record<string, InboxStatus>;
 };
 
 export const defaultStore = (): Store => ({
   role: "seeking",
   profiles: { seeking: emptyProfile("seeking"), hiring: emptyProfile("hiring") },
   requests: [],
+  inbox: {},
 });
 
 export const loadStore = (): Store => {
