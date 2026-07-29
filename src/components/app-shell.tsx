@@ -75,7 +75,7 @@ export function RoleSwitch({
               : "text-primary-foreground/80")
           }
         >
-          {option === "seeking" ? "I'm seeking work" : "I'm hiring"}
+          {option === "seeking" ? "Seeking" : "Hiring"}
         </button>
       ))}
     </div>
