@@ -1,0 +1,188 @@
+export type Role = "hiring" | "seeking";
+
+export const SKILLS = [
+  "Crochet",
+  "Baking",
+  "Knitting",
+  "Painting",
+  "Drawing",
+  "Social media",
+  "Flyer making",
+  "Pottery",
+  "Sewing",
+  "Photography",
+  "Cooking",
+  "Gardening",
+] as const;
+
+export type Profile = {
+  id: string;
+  role: Role;
+  name: string;
+  /** Business area / neighbourhood */
+  location: string;
+  skills: string[];
+  /** interests (seeking) / requirements (hiring) */
+  about: string;
+  /** what they are looking for */
+  lookingFor: string;
+  /** expected salary (seeking) / offered salary (hiring) */
+  salary: string;
+};
+
+export const emptyProfile = (role: Role): Profile => ({
+  id: "me",
+  role,
+  name: "",
+  location: "",
+  skills: [],
+  about: "",
+  lookingFor: "",
+  salary: "",
+});
+
+export const SEED: Profile[] = [
+  {
+    id: "s1",
+    role: "seeking",
+    name: "Amara Diallo",
+    location: "Riverside",
+    skills: ["Crochet", "Knitting", "Sewing"],
+    about: "Ten years of crochet at home. Patient, tidy, good with detailed orders.",
+    lookingFor: "Part-time work, 3 days a week, close to home.",
+    salary: "$12 / hour",
+  },
+  {
+    id: "s2",
+    role: "seeking",
+    name: "Ben Okoro",
+    location: "Old Town",
+    skills: ["Baking", "Cooking"],
+    about: "Home baker: breads, cinnamon rolls, birthday cakes. Early riser.",
+    lookingFor: "Morning shifts in a small bakery or café.",
+    salary: "$14 / hour",
+  },
+  {
+    id: "s3",
+    role: "seeking",
+    name: "Priya Raman",
+    location: "Green Market",
+    skills: ["Social media", "Flyer making", "Drawing"],
+    about: "I run two community pages and design simple posters in Canva.",
+    lookingFor: "Remote or 2 days on site, flexible hours.",
+    salary: "$300 / month",
+  },
+  {
+    id: "s4",
+    role: "seeking",
+    name: "Marta Silva",
+    location: "Hillside",
+    skills: ["Pottery", "Painting"],
+    about: "Studio-trained potter, comfortable with wheel work and glazing.",
+    lookingFor: "Workshop assistant or market stall help.",
+    salary: "$15 / hour",
+  },
+  {
+    id: "s5",
+    role: "seeking",
+    name: "Joseph Kim",
+    location: "Riverside",
+    skills: ["Photography", "Social media"],
+    about: "Product photos with natural light, quick edits, own camera.",
+    lookingFor: "Weekend gigs, paid per shoot.",
+    salary: "$60 / shoot",
+  },
+  {
+    id: "s6",
+    role: "seeking",
+    name: "Fatima Noor",
+    location: "Old Town",
+    skills: ["Gardening", "Painting"],
+    about: "Grew up on a nursery farm. Reliable, happy outdoors.",
+    lookingFor: "Steady weekday work.",
+    salary: "$11 / hour",
+  },
+  {
+    id: "h1",
+    role: "hiring",
+    name: "Sunrise Corner Bakery",
+    location: "Old Town",
+    skills: ["Baking", "Cooking", "Social media"],
+    about: "Small family bakery, 4 staff. We need someone calm during the morning rush.",
+    lookingFor: "A baker's assistant who can start at 5am and help post daily specials.",
+    salary: "$13–15 / hour",
+  },
+  {
+    id: "h2",
+    role: "hiring",
+    name: "Loop & Thread Studio",
+    location: "Riverside",
+    skills: ["Crochet", "Knitting", "Sewing"],
+    about: "We sell handmade blankets and toys at three local markets.",
+    lookingFor: "Two makers who can finish 5 pieces a week from our patterns.",
+    salary: "$10 / hour + per piece bonus",
+  },
+  {
+    id: "h3",
+    role: "hiring",
+    name: "Claywork Collective",
+    location: "Hillside",
+    skills: ["Pottery", "Painting", "Photography"],
+    about: "Community pottery studio running evening classes.",
+    lookingFor: "Studio helper for glazing, kiln loading and class setup.",
+    salary: "$14 / hour",
+  },
+  {
+    id: "h4",
+    role: "hiring",
+    name: "Green Market Grocers",
+    location: "Green Market",
+    skills: ["Flyer making", "Social media", "Gardening"],
+    about: "Neighbourhood grocery with a small plant section.",
+    lookingFor: "Someone to make weekly flyers and keep our page alive.",
+    salary: "$250 / month",
+  },
+  {
+    id: "h5",
+    role: "hiring",
+    name: "Petal & Paper",
+    location: "Old Town",
+    skills: ["Drawing", "Painting", "Flyer making"],
+    about: "Tiny stationery shop selling hand-drawn cards.",
+    lookingFor: "An illustrator for 10 new card designs each month.",
+    salary: "$18 per design",
+  },
+];
+
+const KEY = "employly:v1";
+
+type Store = {
+  role: Role;
+  profiles: Record<Role, Profile>;
+  /** ids the current user has sent a request to */
+  requests: string[];
+};
+
+export const defaultStore = (): Store => ({
+  role: "seeking",
+  profiles: { seeking: emptyProfile("seeking"), hiring: emptyProfile("hiring") },
+  requests: [],
+});
+
+export const loadStore = (): Store => {
+  if (typeof window === "undefined") return defaultStore();
+  try {
+    const raw = window.localStorage.getItem(KEY);
+    if (!raw) return defaultStore();
+    return { ...defaultStore(), ...JSON.parse(raw) } as Store;
+  } catch {
+    return defaultStore();
+  }
+};
+
+export const saveStore = (store: Store) => {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(KEY, JSON.stringify(store));
+};
+
+export type { Store };
