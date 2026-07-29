@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { store, hydrated, setRole, toggleRequest } = useEmployly();
+  const { store, hydrated, setRole } = useEmployly();
   const [selected, setSelected] = useState<string[]>([]);
 
   const role = store.role;
@@ -76,14 +76,6 @@ function Index() {
           </p>
         )}
       </div>
-
-      <button
-        type="button"
-        onClick={() => results.forEach((p) => !store.requests.includes(p.id) && toggleRequest(p.id))}
-        className="sr-only"
-        aria-hidden
-        tabIndex={-1}
-      />
     </AppShell>
   );
 }
