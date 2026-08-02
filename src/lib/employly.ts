@@ -5,7 +5,6 @@ export const SKILLS = [
   "Baking",
   "Sewing",
   "Teaching",
-  "Knitting",
   "Painting",
   "Drawing",
   "Social media",
