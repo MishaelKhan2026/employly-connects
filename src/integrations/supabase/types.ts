@@ -14,17 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      profile_private: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          salary: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id: string
+          salary?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          salary?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           about: string
           account_role: string
           created_at: string
-          email: string | null
           id: string
           location: string
           looking_for: string
           name: string
-          salary: string
           skills: string[]
           status: string
           updated_at: string
@@ -33,12 +52,10 @@ export type Database = {
           about?: string
           account_role?: string
           created_at?: string
-          email?: string | null
           id: string
           location?: string
           looking_for?: string
           name?: string
-          salary?: string
           skills?: string[]
           status?: string
           updated_at?: string
@@ -47,12 +64,10 @@ export type Database = {
           about?: string
           account_role?: string
           created_at?: string
-          email?: string | null
           id?: string
           location?: string
           looking_for?: string
           name?: string
-          salary?: string
           skills?: string[]
           status?: string
           updated_at?: string
@@ -82,42 +97,7 @@ export type Database = {
       }
     }
     Views: {
-      directory: {
-        Row: {
-          about: string | null
-          account_role: string | null
-          created_at: string | null
-          id: string | null
-          location: string | null
-          looking_for: string | null
-          name: string | null
-          skills: string[] | null
-          status: string | null
-        }
-        Insert: {
-          about?: string | null
-          account_role?: string | null
-          created_at?: string | null
-          id?: string | null
-          location?: string | null
-          looking_for?: string | null
-          name?: string | null
-          skills?: string[] | null
-          status?: string | null
-        }
-        Update: {
-          about?: string | null
-          account_role?: string | null
-          created_at?: string | null
-          id?: string | null
-          location?: string | null
-          looking_for?: string | null
-          name?: string | null
-          skills?: string[] | null
-          status?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       has_role: {
