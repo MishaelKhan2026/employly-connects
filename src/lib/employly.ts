@@ -19,8 +19,11 @@ export type Profile = {
   id: string;
   role: Role;
   name: string;
-  /** Business area / neighbourhood */
+  /** Business area / neighbourhood (street) */
   location: string;
+  country?: string;
+  city?: string;
+  street?: string;
   skills: string[];
   /** interests (seeking) / requirements (hiring) */
   about: string;
