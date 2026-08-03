@@ -4,6 +4,8 @@ import { AppShell } from "@/components/app-shell";
 import { SkillTabs } from "@/components/skill-tabs";
 import { emptyProfile, type Profile } from "@/lib/employly";
 import { useEmployly } from "@/lib/use-employly";
+import { useAuth } from "@/lib/use-auth";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
@@ -47,6 +49,7 @@ const inputClass =
 
 function MyProfile() {
   const { store, hydrated, setRole, setProfile } = useEmployly();
+  const { user } = useAuth();
   const role = store.role;
   const [draft, setDraft] = useState<Profile>(() => emptyProfile(role));
   const [saved, setSaved] = useState(false);
@@ -77,6 +80,20 @@ function MyProfile() {
           e.preventDefault();
           setProfile({ ...draft, role, id: "me" });
           setSaved(true);
+          if (user) {
+            void supabase.from("profiles").upsert({
+              id: user.id,
+              name: draft.name,
+              account_role: role,
+              location: draft.location,
+              skills: draft.skills,
+              about: draft.about,
+              looking_for: draft.lookingFor,
+            });
+            void supabase
+              .from("profile_private")
+              .upsert({ id: user.id, email: user.email ?? null, salary: draft.salary });
+          }
         }}
       >
         <Row label={isBusiness ? "Business name" : "Your name"}>
@@ -157,7 +174,7 @@ function MyProfile() {
           Save profile
         </button>
         {saved && (
-          <p className="text-center text-sm font-medium text-primary">Saved on this device.</p>
+          <p className="text-center text-sm font-medium text-primary">Saved to your account.</p>
         )}
       </form>
     </AppShell>

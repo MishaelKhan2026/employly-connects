@@ -1,7 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import type { Profile } from "@/lib/employly";
+import { useAuth } from "@/lib/use-auth";
 
 export function ProfileCard({ profile, requested }: { profile: Profile; requested: boolean }) {
+  const { isAdmin } = useAuth();
+
   return (
     <Link
       to="/p/$id"
@@ -32,7 +35,13 @@ export function ProfileCard({ profile, requested }: { profile: Profile; requeste
       </div>
 
       <p className="mt-3 line-clamp-2 text-sm text-foreground/80">{profile.lookingFor}</p>
-      <p className="mt-2 text-sm font-semibold text-primary">{profile.salary}</p>
+      {isAdmin ? (
+        <p className="mt-2 text-sm font-semibold text-primary">{profile.salary}</p>
+      ) : (
+        <p className="mt-2 text-xs font-medium text-muted-foreground">
+          Amount visible to admins only
+        </p>
+      )}
     </Link>
   );
 }
