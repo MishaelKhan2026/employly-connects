@@ -1,6 +1,7 @@
-import { Link, useRouterState } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useEffect, type ReactNode } from "react";
 import type { Role } from "@/lib/employly";
+import { useAuth } from "@/lib/use-auth";
 
 export function AppShell({
   role,
@@ -12,6 +13,20 @@ export function AppShell({
   children: ReactNode;
 }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { session, loading, isAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !session) void navigate({ to: "/auth", search: { mode: "login" } });
+  }, [loading, session, navigate]);
+
+  if (loading || !session) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">
+        Loading…
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background font-sans">
@@ -35,6 +50,22 @@ export function AppShell({
             >
               My profile
             </Link>
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="rounded-full border border-primary-foreground/40 px-3 py-1.5 text-sm font-medium"
+                activeProps={{ className: "bg-primary-foreground/15" }}
+              >
+                Admin
+              </Link>
+            )}
+            <button
+              type="button"
+              onClick={() => void signOut()}
+              className="rounded-full border border-primary-foreground/40 px-3 py-1.5 text-sm font-medium"
+            >
+              Sign out
+            </button>
           </nav>
         </div>
         <div className="mx-auto max-w-2xl px-4 pb-3">
