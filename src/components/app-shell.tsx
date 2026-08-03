@@ -2,6 +2,7 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import type { Role } from "@/lib/employly";
 import { useAuth } from "@/lib/use-auth";
+import { useAccount } from "@/lib/use-account";
 
 export function AppShell({
   role,
@@ -14,11 +15,17 @@ export function AppShell({
 }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { session, loading, isAdmin, signOut } = useAuth();
+  const { account, loading: accountLoading } = useAccount();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading && !session) void navigate({ to: "/auth", search: { mode: "login" } });
   }, [loading, session, navigate]);
+
+  useEffect(() => {
+    if (loading || accountLoading || !session) return;
+    if (!account?.onboarded) void navigate({ to: "/onboarding" });
+  }, [loading, accountLoading, session, account?.onboarded, navigate]);
 
   if (loading || !session) {
     return (
@@ -42,6 +49,14 @@ export function AppShell({
               activeProps={{ className: "bg-primary-foreground/15" }}
             >
               Inbox
+            </Link>
+            <Link
+              to="/messages"
+              search={{}}
+              className="rounded-full border border-primary-foreground/40 px-3 py-1.5 text-sm font-medium"
+              activeProps={{ className: "bg-primary-foreground/15" }}
+            >
+              Chat
             </Link>
             <Link
               to="/profile"
