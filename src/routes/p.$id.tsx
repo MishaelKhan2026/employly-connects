@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { AppShell } from "@/components/app-shell";
 import { SEED } from "@/lib/employly";
 import { useEmployly } from "@/lib/use-employly";
+import { useAuth } from "@/lib/use-auth";
 
 export const Route = createFileRoute("/p/$id")({
   loader: ({ params }) => {
@@ -49,6 +50,7 @@ function Field({ label, value }: { label: string; value: string }) {
 function ProfileDetail() {
   const { profile } = Route.useLoaderData();
   const { store, hydrated, setRole, toggleRequest } = useEmployly();
+  const { isAdmin } = useAuth();
   const requested = hydrated && store.requests.includes(profile.id);
   const isBusiness = profile.role === "hiring";
 
@@ -83,7 +85,10 @@ function ProfileDetail() {
           label={isBusiness ? "Type of employee wanted" : "What they are looking for"}
           value={profile.lookingFor}
         />
-        <Field label={isBusiness ? "Salary offered" : "Salary expectation"} value={profile.salary} />
+        <Field
+          label={isBusiness ? "Salary offered" : "Salary expectation"}
+          value={isAdmin ? profile.salary : "Visible to admins only"}
+        />
       </div>
 
       <button
