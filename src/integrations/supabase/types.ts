@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          read: boolean
+          recipient_id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          read?: boolean
+          recipient_id: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          read?: boolean
+          recipient_id?: string
+          sender_id?: string
+        }
+        Relationships: []
+      }
       profile_private: {
         Row: {
           created_at: string
@@ -39,37 +66,49 @@ export type Database = {
         Row: {
           about: string
           account_role: string
+          city: string
+          country: string
           created_at: string
           id: string
           location: string
           looking_for: string
           name: string
+          onboarded: boolean
           skills: string[]
           status: string
+          street: string
           updated_at: string
         }
         Insert: {
           about?: string
           account_role?: string
+          city?: string
+          country?: string
           created_at?: string
           id: string
           location?: string
           looking_for?: string
           name?: string
+          onboarded?: boolean
           skills?: string[]
           status?: string
+          street?: string
           updated_at?: string
         }
         Update: {
           about?: string
           account_role?: string
+          city?: string
+          country?: string
           created_at?: string
           id?: string
           location?: string
           looking_for?: string
           name?: string
+          onboarded?: boolean
           skills?: string[]
           status?: string
+          street?: string
           updated_at?: string
         }
         Relationships: []
